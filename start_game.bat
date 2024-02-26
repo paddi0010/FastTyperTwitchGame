@@ -1,0 +1,2 @@
+node fasttyper.js
+pause
