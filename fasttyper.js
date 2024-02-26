@@ -22,7 +22,7 @@ client.on("connected", (address, port) => {
 
 
 // File Request
-const wordData = JSON.parse(fs.readFileSync('words.json', 'utf8'));
+const wordData = JSON.parse(fs.readFileSync('data/words.json', 'utf8'));
 
 const randomIndex = Math.floor(Math.random() * wordData.words.length);
 const targetWord = wordData.words[randomIndex];
@@ -40,6 +40,8 @@ client.on("message", (channel, tags, message, self) => {
 
   if (message.toLowerCase() === "!start typer") {
     startTypingGame(channel, tags);
+  } else if (message.toLowerCase() === "!stop typer") {
+    stopTypingGame(channel);
   }
 });
 
@@ -47,10 +49,18 @@ function startTypingGame(channel, tags) {
   if (!typingGameActive) {
     typingGameActive = true;
     startTime = Date.now();
-
     client.say(channel, 'Schnell, tippe diesen Text ab: ' + targetWord);
   } else {
     client.say(channel, 'Ein Spiel läuft bereits!');
+  }
+}
+
+function stopTypingGame(channel) {
+  if (typingGameActive) {
+    typingGameActive = false;
+    client.say(channel, `Das Spiel wurde gestoppt.`);
+  } else {
+    client.say(channel, `Es läuft kein Spiel, das gestoppt werden kann.`);
   }
 }
 
