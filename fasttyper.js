@@ -38,8 +38,8 @@ client.on("message", (channel, tags, message, self) => {
     startTypingGame(channel, tags);
   } else if (message.toLowerCase() === "!stop typer") {
     stopTypingGame(channel);
-  } else if (message.toLowerCase().startsWith("!setcooldown")) {
-    setCooldown(channel, tags, message, client);
+  } else if (message.toLowerCase().startsWith("!setcooldown") && (tags.mod || tags.username.toLowerCase() === channel.replace("#", ""))) {
+    setCooldown(channel, tags, message);
   }
 }); 
 
@@ -87,7 +87,7 @@ client.on("message", (channel, tags, message, self) => {
   }
 });
 
-function setCooldown(channel, tags, message, client) {
+function setCooldown(channel, tags, message) {
 
   const newCooldown = parseInt(message.split(' ')[1]);
  
