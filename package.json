@@ -1,0 +1,15 @@
+{
+  "dependencies": {
+    "fs": "^0.0.1-security",
+    "tmi.js": "^1.8.5"
+  },
+  "name": "fasttypertwitchgame",
+  "version": "1.0.0",
+  "main": "fasttyper.js",
+  "scripts": {
+    "start": "node ."
+  },
+  "author": "paddi001",
+  "license": "MIT",
+  "description": "A were is typing faster Game."
+}
