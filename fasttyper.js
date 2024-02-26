@@ -2,6 +2,7 @@ const tmi = require("tmi.js");
 const config = require("./secret_data/config.json");
 const channel = config.channels[0];
 const fs = require('fs');
+const cooldownData = JSON.parse(fs.readFileSync('data/cooldown.json', 'utf8'));
 
 const client = new tmi.Client({
   options: {
@@ -17,22 +18,17 @@ const client = new tmi.Client({
 
 client.on("connected", (address, port) => {
   console.log("Connected", "Adresse: " + address + " Port: " + port);
-  client.say(channel, `FastTyperTwitchGame wurde hochgefahren. ✅ Tippt !start typer in den Chat ein, um das Spiel zu starten!`); // EN --> Message, when the Bot started / DE --> Nachricht, wenn der Bot gestartet ist. /
+  client.say(channel, `FastTyperTwitchGame wurde hochgefahren. ✅ Tippt !start typer in den Chat ein, um das Spiel zu starten!`);
 });
-
 
 // File Request
 const wordData = JSON.parse(fs.readFileSync('data/words.json', 'utf8'));
 
-const randomIndex = Math.floor(Math.random() * wordData.words.length);
-const targetWord = wordData.words[randomIndex];
-
-console.log("Zufälliges Wort:", targetWord);
-
 //variables
 let typingGameActive = false;
 let startTime;
-
+let cooldownTime = cooldownData.cooldown;
+let targetWord; // Hier global initialisieren
 
 // Commands
 client.on("message", (channel, tags, message, self) => {
@@ -42,13 +38,23 @@ client.on("message", (channel, tags, message, self) => {
     startTypingGame(channel, tags);
   } else if (message.toLowerCase() === "!stop typer") {
     stopTypingGame(channel);
+  } else if (message.toLowerCase().startsWith("!setcooldown")) {
+    setCooldown(channel, tags, message, client);
   }
-});
+}); 
 
 function startTypingGame(channel, tags) {
   if (!typingGameActive) {
     typingGameActive = true;
     startTime = Date.now();
+
+    setTimeout(() => {
+      typingGameActive = false;
+    }, cooldownTime * 1000);
+
+    const randomIndex = Math.floor(Math.random() * wordData.words.length);
+    targetWord = wordData.words[randomIndex];
+
     client.say(channel, 'Schnell, tippe diesen Text ab: ' + targetWord);
   } else {
     client.say(channel, 'Ein Spiel läuft bereits!');
@@ -81,7 +87,18 @@ client.on("message", (channel, tags, message, self) => {
   }
 });
 
+function setCooldown(channel, tags, message, client) {
 
+  const newCooldown = parseInt(message.split(' ')[1]);
+ 
+  if (isNaN(newCooldown) || newCooldown <= 0) {
+    client.say(channel, "Ungültige Eingabe. Bitte geben Sie eine positive Zahl ein.");
+    return;
+  }
+  cooldownData.cooldown = newCooldown;
+  fs.writeFileSync('data/cooldown.json', JSON.stringify(cooldownData, null, 2));
+  cooldownTime = newCooldown;
+  client.say(channel, `Cooldown wurde auf ${newCooldown} Sekunden gesetzt.`);
+}
 
 client.connect().catch(console.error);
-
