@@ -31,7 +31,14 @@ Now the Twitch Game should be started!
 **For stop the Bot, you can easy close the Command Window ;)**
 
 
+| Command | Description |
+| --- | --- |
+| `!start typer` | Start the Game |
+| `!stop typer` | Stop the Game |
+| `!setcooldown <seconds>` | Set the Cooldown Time |
+
+
 For more Informations, you can open the Wiki here: ()[]
 
-> --> *I am a beginner in JavaScript, so there may be errors.
+--> *I am a beginner in JavaScript, so there may be errors.
 If you find a bug or encounter any other issues, feel free to open a issue, and I'll do my best to fix the bug or help you.* :)
