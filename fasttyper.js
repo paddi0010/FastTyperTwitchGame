@@ -28,7 +28,7 @@ const wordData = JSON.parse(fs.readFileSync('data/words.json', 'utf8'));
 let typingGameActive = false;
 let startTime;
 let cooldownTime = cooldownData.cooldown;
-let targetWord; // Hier global initialisieren
+let targetWord;
 
 // Commands
 client.on("message", (channel, tags, message, self) => {
