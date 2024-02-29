@@ -38,7 +38,7 @@ Now the Twitch Game should be started!
 | `!setcooldown <seconds>` | Set the Cooldown Time |
 
 
-For more Informations, you can open the Wiki here: ()[]
+For more Informations, you can open the Wiki here: [WIKI](https://github.com/paddi0010/FastTyperTwitchGame/wiki)
 
 --> *I am a beginner in JavaScript, so there may be errors.
 If you find a bug or encounter any other issues, feel free to open a issue, and I'll do my best to fix the bug or help you.* :)
